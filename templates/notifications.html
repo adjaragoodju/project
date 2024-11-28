@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Уведомления</title>
+    <link rel="stylesheet" href="../static/css/notifications.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Расписание</a></li>
+          <li><a href="{{ url_for('notifications') }}">Уведомления</a></li>
+          <li><a href="{{ url_for('edit') }}">Изменить Расписание</a></li>
+          {% if 'user_id' in session %}
+          <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+          {% else %}
+          <li><a href="{{ url_for('login') }}">Войти</a></li>
+          <!-- <li><a href="{{ url_for('register') }}">Регистрация</a></li> -->
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <main class="container">
+      <section>
+        <h1>Уведомления</h1>
+        <div class="notification">
+          <p>
+            Было изменено расписание. Чтобы посмотреть обновленное расписание,
+            перейдите по <a href="index.html">ссылке</a>.
+          </p>
+        </div>
+        <div class="notification">
+          <p>
+            В расписании на понедельник внесены изменения. Подробнее можно
+            узнать по <a href="index.html">ссылке</a>.
+          </p>
+        </div>
+        <div class="notification">
+          <p>
+            Добавлены новые пары на среду. Проверьте обновленное расписание по
+            <a href="index.html">ссылке</a>.
+          </p>
+        </div>
+        <div class="notification">
+          <p>
+            Изменены аудитории для занятий в пятницу. Узнайте новые данные по
+            <a href="index.html">ссылке</a>.
+          </p>
+        </div>
+        <div class="notification">
+          <p>
+            Обновлено расписание на следующую неделю. Узнайте подробности по
+            <a href="index.html">ссылке</a>.
+          </p>
+        </div>
+        <div class="notification">
+          <p>
+            Изменено время занятий на вторник. Подробнее смотрите по
+            <a href="index.html">ссылке</a>.
+          </p>
+        </div>
+        <div class="notification">
+          <p>
+            Добавлена новая дисциплина в расписание на четверг. Проверьте
+            подробности по <a href="index.html">ссылке</a>.
+          </p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

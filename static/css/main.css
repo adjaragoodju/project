@@ -1,0 +1,82 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding-inline: 1rem;
+}
+
+.schedule-table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+.schedule-table caption {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.schedule-table,
+.schedule-table th,
+.schedule-table td {
+  border: 1px solid #333;
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 10px;
+  text-align: center;
+}
+
+.schedule-table th {
+  background-color: #333;
+  color: white;
+}
