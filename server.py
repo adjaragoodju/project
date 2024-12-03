@@ -30,6 +30,10 @@ telegram_bot_token = os.getenv('TELEGRAM_TOKEN')
 bot = Bot(token=telegram_bot_token)
 
 @app.route('/')
+def welcome():
+    return render_template('welcome.html')
+
+@app.route('/index')
 def index():
     return render_template('index.html')
 
