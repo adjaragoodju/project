@@ -13,7 +13,7 @@ from utils.decorators import login_required
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__, static_folder='.')
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})  # Разрешение запросов с http://127.0.0.1:5500
+CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})  
 
 bcrypt = Bcrypt(app)
 
@@ -101,7 +101,7 @@ def update_schedule():
                 if schedule:
                     schedule.day = row['day']
                     schedule.pair = row['pair']
-                    schedule.start_time = row['start_time']
+                    schedule.time = row['time']
                     schedule.end_time = row['end_time']
                     schedule.subject = row['subject']
                     schedule.professor = row['professor']
@@ -110,7 +110,7 @@ def update_schedule():
                 new_schedule = Schedule(
                     day=row['day'],
                     pair=row['pair'],
-                    start_time=row['start_time'],
+                    time=row['time'],
                     end_time=row['end_time'],
                     subject=row['subject'],
                     professor=row['professor'],
@@ -167,8 +167,8 @@ def get_schedule():
                 'id': schedule_item.id,
                 'day': schedule_item.day,
                 'pair': schedule_item.pair,
-                'time': schedule_item.time.strftime('%H:%M'),  # Формат времени в '%H:%M'
-                'end_time': schedule_item.end_time.strftime('%H:%M'),  # Формат времени в '%H:%M'
+                'time': schedule_item.time,
+                'end_time': schedule_item.end_time,
                 'subject': schedule_item.subject,
                 'professor': schedule_item.professor,
                 'room': schedule_item.room

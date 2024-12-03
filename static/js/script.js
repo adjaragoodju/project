@@ -147,7 +147,7 @@ async function handleSubmit(event) {
       id: id || null,
       day: select.value,
       pair: inputs[0].value,
-      start_time: inputs[1].value,
+      time: inputs[1].value,
       end_time: inputs[2].value,
       subject: inputs[3].value,
       professor: inputs[4].value,

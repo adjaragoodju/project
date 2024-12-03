@@ -17,7 +17,7 @@
           <li><a href="{{ url_for('logout') }}">Выйти</a></li>
           {% else %}
           <li><a href="{{ url_for('login') }}">Войти</a></li>
-          <!-- <li><a href="{{ url_for('register') }}">Регистрация</a></li> -->
+          <li><a href="{{ url_for('register') }}">Регистрация</a></li>
           {% endif %}
         </ul>
       </nav>
@@ -28,43 +28,43 @@
         <div class="notification">
           <p>
             Было изменено расписание. Чтобы посмотреть обновленное расписание,
-            перейдите по <a href="index.html">ссылке</a>.
+            перейдите по <a href="{{ url_for('index') }}">ссылке</a>.
           </p>
         </div>
         <div class="notification">
           <p>
             В расписании на понедельник внесены изменения. Подробнее можно
-            узнать по <a href="index.html">ссылке</a>.
+            узнать по <a href="{{ url_for('index') }}">ссылке</a>.
           </p>
         </div>
         <div class="notification">
           <p>
             Добавлены новые пары на среду. Проверьте обновленное расписание по
-            <a href="index.html">ссылке</a>.
+            <a href="{{ url_for('index') }}">ссылке</a>.
           </p>
         </div>
         <div class="notification">
           <p>
             Изменены аудитории для занятий в пятницу. Узнайте новые данные по
-            <a href="index.html">ссылке</a>.
+            <a href="{{ url_for('index') }}">ссылке</a>.
           </p>
         </div>
         <div class="notification">
           <p>
             Обновлено расписание на следующую неделю. Узнайте подробности по
-            <a href="index.html">ссылке</a>.
+            <a href="{{ url_for('index') }}">ссылке</a>.
           </p>
         </div>
         <div class="notification">
           <p>
             Изменено время занятий на вторник. Подробнее смотрите по
-            <a href="index.html">ссылке</a>.
+            <a href="{{ url_for('index') }}">ссылке</a>.
           </p>
         </div>
         <div class="notification">
           <p>
             Добавлена новая дисциплина в расписание на четверг. Проверьте
-            подробности по <a href="index.html">ссылке</a>.
+            подробности по <a href="{{ url_for('index') }}">ссылке</a>.
           </p>
         </div>
       </section>
