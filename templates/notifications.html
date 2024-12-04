@@ -1,74 +1,41 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Уведомления</title>
-    <link rel="stylesheet" href="../static/css/notifications.css" />
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="{{ url_for('welcome') }}">Главная страница</a></li>
-          <li><a href="{{ url_for('index') }}">Расписание</a></li>
-          <li><a href="{{ url_for('notifications') }}">Уведомления</a></li>
-          <li><a href="{{ url_for('edit') }}">Изменить Расписание</a></li>
-          {% if 'user_id' in session %}
-          <li><a href="{{ url_for('logout') }}">Выйти</a></li>
-          {% else %}
-          <li><a href="{{ url_for('login') }}">Войти</a></li>
-          <li><a href="{{ url_for('register') }}">Регистрация</a></li>
-          {% endif %}
-        </ul>
-      </nav>
-    </header>
-    <main class="container">
-      <section>
-        <h1>Уведомления</h1>
-        <div class="notification">
-          <p>
-            Было изменено расписание. Чтобы посмотреть обновленное расписание,
-            перейдите по <a href="{{ url_for('index') }}">ссылке</a>.
-          </p>
-        </div>
-        <div class="notification">
-          <p>
-            В расписании на понедельник внесены изменения. Подробнее можно
-            узнать по <a href="{{ url_for('index') }}">ссылке</a>.
-          </p>
-        </div>
-        <div class="notification">
-          <p>
-            Добавлены новые пары на среду. Проверьте обновленное расписание по
-            <a href="{{ url_for('index') }}">ссылке</a>.
-          </p>
-        </div>
-        <div class="notification">
-          <p>
-            Изменены аудитории для занятий в пятницу. Узнайте новые данные по
-            <a href="{{ url_for('index') }}">ссылке</a>.
-          </p>
-        </div>
-        <div class="notification">
-          <p>
-            Обновлено расписание на следующую неделю. Узнайте подробности по
-            <a href="{{ url_for('index') }}">ссылке</a>.
-          </p>
-        </div>
-        <div class="notification">
-          <p>
-            Изменено время занятий на вторник. Подробнее смотрите по
-            <a href="{{ url_for('index') }}">ссылке</a>.
-          </p>
-        </div>
-        <div class="notification">
-          <p>
-            Добавлена новая дисциплина в расписание на четверг. Проверьте
-            подробности по <a href="{{ url_for('index') }}">ссылке</a>.
-          </p>
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+{% extends 'base.html' %} {% block title %}Уведомления{% endblock %} {% block
+content %}
+<section class="container">
+  <h1>Уведомления</h1>
+  <div id="notifications-container">
+    <!-- Здесь будут загружаться уведомления -->
+  </div>
+</section>
+{% endblock %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/notifications.css') }}"
+/>
+{% endblock %} {% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    fetch('/get_notifications')
+      .then((response) => response.json())
+      .then((data) => {
+        const container = document.getElementById('notifications-container');
+        if (data.length === 0) {
+          container.innerHTML = '<p>Нет новых уведомлений.</p>';
+        } else {
+          const list = document.createElement('ul');
+          data.forEach((notification) => {
+            const item = document.createElement('li');
+            item.classList.add('notification');
+            item.innerHTML = `<p>${notification.message}. Подробнее можно узнать по <a href="{{ url_for('index') }}">ссылке</a>.</p>`;
+            list.appendChild(item);
+          });
+          container.appendChild(list);
+        }
+      })
+      .catch((error) => {
+        console.error('Ошибка при загрузке уведомлений:', error);
+        document.getElementById('notifications-container').innerHTML =
+          '<p>Ошибка при загрузке уведомлений.</p>';
+      });
+  });
+</script>
+{% endblock %}

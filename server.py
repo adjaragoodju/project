@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, flash, redirect, url_for, render_template, session, abort
+from flask import Flask, request, jsonify, flash, redirect, url_for, render_template, session
 from flask_cors import CORS
 import logging
 from flask_sqlalchemy import SQLAlchemy
@@ -7,7 +7,8 @@ from telegram import Bot
 from sqlalchemy.sql import text
 from telegram.error import TelegramError
 import asyncio
-
+from dotenv import load_dotenv
+import os
 from utils.decorators import login_required
 
 logging.basicConfig(level=logging.DEBUG)
@@ -16,22 +17,21 @@ app = Flask(__name__, static_folder='.')
 CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})  
 
 bcrypt = Bcrypt(app)
-
+load_dotenv()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:2505@localhost:5432/schedule'
-app.config['SECRET_KEY'] = 'configure strong secret key here'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_LINK')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 db = SQLAlchemy(app)
-from dotenv import load_dotenv
-import os
-load_dotenv()
+
+
 # Инициализация бота
 telegram_bot_token = os.getenv('TELEGRAM_TOKEN')
 bot = Bot(token=telegram_bot_token)
 
 @app.route('/')
 def welcome():
-    return render_template('welcome.html')
+    return render_template('welcome.html', text=app.config['SQLALCHEMY_DATABASE_URI'])
 
 @app.route('/index')
 def index():
@@ -79,14 +79,19 @@ def login():
         password = request.form['password']
 
         user = User.query.filter_by(username=username).first()
-        if user and bcrypt.check_password_hash(user.password, password):
-            session['user_id'] = user.id 
-            return redirect(url_for('edit'))  
-
-        flash('Неправильный логин или пароль')
+        if user:
+            if bcrypt.check_password_hash(user.password, password):
+                session['user_id'] = user.id 
+                return redirect(url_for('edit'))
+            else:
+                flash('Неправильный логин или пароль')
+        else:
+            flash('Такой пользователь не зарегистрирован')
+        
         return redirect(url_for('login'))
 
     return render_template('login.html')
+
 
 @app.route('/logout')
 def logout():
@@ -188,6 +193,30 @@ def get_schedule():
         response.status_code = 500
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
+
+@app.route('/get_notifications', methods=['GET'])
+def get_notifications():
+    from models import Notification
+    try:
+        notifications = Notification.query.order_by(Notification.created_at.desc()).all()
+        notification_list = []
+        for notification in notifications:
+            notification_list.append({
+                'message': notification.message,
+                'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+
+        response = jsonify(notification_list)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+    except Exception as e:
+        logging.error(f"Ошибка при получении уведомлений: {e}")
+        response = jsonify({'message': 'Произошла ошибка при получении уведомлений'})
+        response.status_code = 500
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
 
 def send_notifications():
     try: 

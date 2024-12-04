@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Главная страница</title>
+    <title>Расписание</title>
     <link rel="stylesheet" href="../static/css/main.css" />
     <script src="../static/js/load-data.js" defer></script>
   </head>
@@ -12,7 +12,7 @@
       <nav>
         <ul>
           <li><a href="{{ url_for('welcome') }}">Главная страница</a></li>
-          <li><a href="{{ url_for('index') }}">Расписание</a></li>
+   '       <li><a href="{{ url_for('index') }}">Расписание</a></li>
           <li><a href="{{ url_for('notifications') }}">Уведомления</a></li>
           <li><a href="{{ url_for('edit') }}">Изменить Расписание</a></li>
           {% if 'user_id' in session %}
@@ -27,5 +27,12 @@
     <main>
       <section class="scheduleContainer"></section>
     </main>
-  </body>
-</html>
+  </body>'
+</html> -->
+
+{% extends 'base.html' %} {% block title %}Расписание{% endblock %} {% block
+content %}
+<section class="scheduleContainer"></section>
+{% endblock %} {% block scripts %}
+<script src="../static/js/load-data.js" defer></script>
+{% endblock %}

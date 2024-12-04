@@ -1,4 +1,5 @@
 from server import db
+from datetime import datetime
 
 class Schedule(db.Model):
     __tablename__ = 'schedules'
@@ -18,3 +19,11 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+
+class Notification(db.Model):
+    __tablename__ = 'notifications'
+
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.String(500), nullable=False)
+    schedule_id = db.Column(db.Integer, db.ForeignKey('schedules.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
