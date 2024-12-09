@@ -24,6 +24,19 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 db = SQLAlchemy(app)
 
+from functools import wraps
+from flask import abort
+
+def role_required(role):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            user_role = session.get('user_role')
+            if user_role != role:
+                abort(403)  # Доступ запрещен
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
 
 # Инициализация бота
 telegram_bot_token = os.getenv('TELEGRAM_TOKEN')
@@ -31,9 +44,11 @@ bot = Bot(token=telegram_bot_token)
 
 @app.route('/')
 def welcome():
-    return render_template('welcome.html', text=app.config['SQLALCHEMY_DATABASE_URI'])
+    return render_template('welcome.html')
 
 @app.route('/index')
+@login_required
+@role_required('user')  # Только для пользователей
 def index():
     return render_template('index.html')
 
@@ -42,11 +57,14 @@ def static_file(path):
     return app.send_static_file(path)
 
 @app.route('/notifications')
+@login_required
+@role_required('admin')
 def notifications():
     return render_template('notifications.html')
 
 @app.route('/edit')
 @login_required
+@role_required('admin')
 def edit():
     return render_template('edit_schedule.html')
 
@@ -81,8 +99,11 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user:
             if bcrypt.check_password_hash(user.password, password):
-                session['user_id'] = user.id 
-                return redirect(url_for('edit'))
+                session['user_id'] = user.id
+                session['user_role'] = user.role  # Сохраняем роль в сессии
+                if user.role == 'admin':
+                    return redirect(url_for('edit'))
+                return redirect(url_for('index'))
             else:
                 flash('Неправильный логин или пароль')
         else:
@@ -92,7 +113,7 @@ def login():
 
     return render_template('login.html')
 
-
+ 
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)  

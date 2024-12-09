@@ -43,3 +43,49 @@ cursor.close()
 connection.close()
 
 print("Данные успешно добавлены в таблицу schedules.")
+
+
+import psycopg2
+
+# Установите соединение с базой данных
+connection = psycopg2.connect(
+    dbname="schedule",
+    user="postgres",
+    password="2505",
+    host="localhost",
+    port="5432"
+)
+cursor = connection.cursor()
+
+# 1. Добавление поля role в таблицу users
+cursor.execute("""
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'user';
+""")
+connection.commit()
+
+# 2. Данные пользователей
+users_data = [
+    ("admin", "adminpass", "admin"),  # Администратор
+    ("user1", "user1pass", "user"),  # Обычный пользователь
+    ("user2", "user2pass", "user")   # Еще один пользователь
+]
+
+# 3. Вставка пользователей с хэшированием паролей
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt()
+
+for username, password, role in users_data:
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    cursor.execute("""
+        INSERT INTO users (username, password, role)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (username) DO NOTHING;
+    """, (username, hashed_password, role))
+
+connection.commit()
+
+# Закрытие соединения
+cursor.close()
+connection.close()
+print("База данных успешно обновлена.")

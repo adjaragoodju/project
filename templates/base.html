@@ -12,18 +12,28 @@
       <nav>
         <ul>
           <li><a href="{{ url_for('welcome') }}">Главная страница</a></li>
+
+          {% if 'user_id' in session %} {% if session['user_role'] == 'user' %}
+          <!-- Меню для пользователя -->
           <li><a href="{{ url_for('index') }}">Расписание</a></li>
+          {% elif session['user_role'] == 'admin' %}
+          <!-- Меню для администратора -->
           <li><a href="{{ url_for('notifications') }}">Уведомления</a></li>
-          <li><a href="{{ url_for('edit') }}">Изменить Расписание</a></li>
-          {% if 'user_id' in session %}
+          <li>
+            <a href="{{ url_for('edit') }}">Изменить Расписание</a>
+          </li>
+          {% endif %}
+          <!-- Общие пункты для всех авторизованных пользователей -->
           <li><a href="{{ url_for('logout') }}">Выйти</a></li>
           {% else %}
+          <!-- Меню для гостей -->
           <li><a href="{{ url_for('login') }}">Войти</a></li>
           <li><a href="{{ url_for('register') }}">Регистрация</a></li>
           {% endif %}
         </ul>
       </nav>
     </header>
+
     <main class="container">
       {% with messages = get_flashed_messages() %} {% if messages %}
       <ul>
