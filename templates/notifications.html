@@ -1,41 +1,44 @@
 {% extends 'base.html' %} {% block title %}Уведомления{% endblock %} {% block
 content %}
-<section class="container">
+<div class="row">
   <h1>Уведомления</h1>
-  <div id="notifications-container">
-    <!-- Здесь будут загружаться уведомления -->
+
+  <!-- Форма для создания нового уведомления -->
+  <form method="POST">
+    <div class="col-lg-6">
+      <label class="form-label" for="message">Текст уведомления:</label>
+      <textarea
+        class="form-control"
+        name="message"
+        id="message"
+        rows="4"
+        required
+      ></textarea>
+    </div>
+    <button class="btn btn-outline-primary mt-3" type="submit">
+      Отправить
+    </button>
+  </form>
+</div>
+
+<hr />
+
+<div class="row">
+  <h2>История уведомлений</h2>
+  <div class="col-lg-6 mt-3">
+    <ul class="list-group">
+      {% for notification in notifications %}
+      <li
+        class="list-group-item d-flex justify-content-between align-items-start"
+      >
+        {{ notification.message }}
+        <span class="badge text-bg-secondary rounded-pill"
+          >{{ notification.created_at.strftime('%d.%m.%Y %H:%M') }}</span
+        >
+      </li>
+      {% endfor %}
+    </ul>
   </div>
-</section>
-{% endblock %} {% block styles %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/notifications.css') }}"
-/>
-{% endblock %} {% block scripts %}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    fetch('/get_notifications')
-      .then((response) => response.json())
-      .then((data) => {
-        const container = document.getElementById('notifications-container');
-        if (data.length === 0) {
-          container.innerHTML = '<p>Нет новых уведомлений.</p>';
-        } else {
-          const list = document.createElement('ul');
-          data.forEach((notification) => {
-            const item = document.createElement('li');
-            item.classList.add('notification');
-            item.innerHTML = `<p>${notification.message}. Подробнее можно узнать по <a href="{{ url_for('index') }}">ссылке</a>.</p>`;
-            list.appendChild(item);
-          });
-          container.appendChild(list);
-        }
-      })
-      .catch((error) => {
-        console.error('Ошибка при загрузке уведомлений:', error);
-        document.getElementById('notifications-container').innerHTML =
-          '<p>Ошибка при загрузке уведомлений.</p>';
-      });
-  });
-</script>
+</div>
+
 {% endblock %}

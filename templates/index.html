@@ -1,38 +1,6 @@
-<!-- <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Расписание</title>
-    <link rel="stylesheet" href="../static/css/main.css" />
-    <script src="../static/js/load-data.js" defer></script>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="{{ url_for('welcome') }}">Главная страница</a></li>
-   '       <li><a href="{{ url_for('index') }}">Расписание</a></li>
-          <li><a href="{{ url_for('notifications') }}">Уведомления</a></li>
-          <li><a href="{{ url_for('edit') }}">Изменить Расписание</a></li>
-          {% if 'user_id' in session %}
-          <li><a href="{{ url_for('logout') }}">Выйти</a></li>
-          {% else %}
-          <li><a href="{{ url_for('login') }}">Войти</a></li>
-          <li><a href="{{ url_for('register') }}">Регистрация</a></li>
-          {% endif %}
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <section class="scheduleContainer"></section>
-    </main>
-  </body>'
-</html> -->
-
 {% extends 'base.html' %} {% block title %}Расписание{% endblock %} {% block
-content %}
-<section class="scheduleContainer"></section>
+styles %} {% endblock %} {% block content %}
+<div id="scheduleContainer" class="row"></div>
 {% endblock %} {% block scripts %}
 <script src="../static/js/load-data.js" defer></script>
 {% endblock %}

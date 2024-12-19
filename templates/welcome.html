@@ -1,9 +1,20 @@
 {% extends 'base.html' %} {% block title %}Добро пожаловать{% endblock %} {%
-block content %}
-<div class="container mt-5">
+block content %} {% block styles %} {% endblock %}
+<div class="row">
   <h1>Добро пожаловать на наш сайт!</h1>
-  <p>
+  <p class="lead">
     Мы рады видеть вас здесь. Ознакомьтесь с нашим расписанием и уведомлениями.
   </p>
+  <div class="d-flex">
+    {% if session.user_role == 'user' %}
+    <a href="{{ url_for('index') }}" class="btn btn-primary"
+      >Перейти на страницу расписания</a
+    >
+    {% else %}
+    <a href="{{ url_for('edit') }}" class="btn btn-primary"
+      >Перейти на страницу расписания</a
+    >
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

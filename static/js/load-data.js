@@ -8,7 +8,6 @@ async function loadSchedule() {
     const data = await res.json();
     console.log(data);
     if (Array.isArray(data)) {
-      // Проверка, что data - массив
       createScheduleTable(data);
     } else {
       console.error('Полученные данные не являются массивом');
@@ -19,7 +18,7 @@ async function loadSchedule() {
 }
 
 function createScheduleTable(data) {
-  const scheduleContainer = document.querySelector('.scheduleContainer');
+  const scheduleContainer = document.querySelector('#scheduleContainer');
   scheduleContainer.innerHTML = '';
 
   const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
@@ -28,12 +27,16 @@ function createScheduleTable(data) {
     const dayData = data.filter((entry) => entry.day === day);
 
     if (dayData.length > 0) {
-      const table = document.createElement('table');
-      table.classList.add('schedule-table');
+      const item = document.createElement('div');
+      item.className = 'table-responsive';
 
-      const caption = document.createElement('caption');
-      caption.textContent = day;
-      table.appendChild(caption);
+      const table = document.createElement('table');
+      table.classList.add('table', 'table-bordered', 'table-hover');
+
+      const dayText = document.createElement('h4');
+      dayText.textContent = day;
+      item.appendChild(dayText);
+      item.appendChild(table);
 
       const thead = document.createElement('thead');
       const headerRow = document.createElement('tr');
@@ -66,7 +69,7 @@ function createScheduleTable(data) {
       });
       table.appendChild(tbody);
 
-      scheduleContainer.appendChild(table);
+      scheduleContainer.appendChild(item);
     }
   });
 }

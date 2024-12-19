@@ -13,7 +13,6 @@ async function loadSchedule() {
     const res = await fetch('/get_schedule');
     const data = await res.json();
     if (Array.isArray(data)) {
-      // Проверка, что data - массив
       populateTable(data);
     } else {
       console.error('Полученные данные не являются массивом');
@@ -37,7 +36,7 @@ function populateTable(data) {
 
   data.forEach((entry) => {
     const row = document.createElement('tr');
-    row.dataset.id = entry.id; // Добавляем id как атрибут data
+    row.dataset.id = entry.id;
 
     const dayCell = document.createElement('td');
     const daySelect = createSelect(
@@ -52,6 +51,7 @@ function populateTable(data) {
         const td = document.createElement('td');
         const input = document.createElement('input');
         input.type = field === 'pair' ? 'number' : 'text';
+        input.className = 'form-control form-control-sm';
         if (field === 'time' || field === 'end_time') input.type = 'time';
         input.value = entry[field];
         td.appendChild(input);
@@ -61,6 +61,7 @@ function populateTable(data) {
 
     const actionCell = document.createElement('td');
     const deleteButton = document.createElement('button');
+    deleteButton.className = 'btn btn-sm btn-outline-danger';
     deleteButton.textContent = 'Удалить';
     deleteButton.addEventListener('click', () => deleteRow(entry.id, row));
     actionCell.appendChild(deleteButton);
@@ -166,7 +167,7 @@ async function handleSubmit(event) {
     });
     const result = await res.json();
     alert(result.message);
-    loadSchedule(); // Перезагрузить расписание после обновления
+    loadSchedule();
   } catch (error) {
     console.error('Ошибка при сохранении расписания:', error);
   }

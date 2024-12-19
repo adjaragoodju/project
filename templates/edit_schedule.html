@@ -1,30 +1,39 @@
 {% extends 'base.html' %} {% block title %} Изменить Расписание {% endblock %}
-{% block content %} {% block styles %}
-<link rel="stylesheet" href="../static/css/edit_schedule.css" /> {% endblock %}
-<section>
+{% block content %} {% block styles %} {% endblock %}
+<div class="row">
   <h1>Изменить Расписание</h1>
-  <form id="edit-schedule-form">
-    <table>
-      <thead>
-        <tr>
-          <th>День недели</th>
-          <th>Пара</th>
-          <th>Время начала</th>
-          <th>Время окончания</th>
-          <th>Название дисциплины</th>
-          <th>Преподаватель</th>
-          <th>Аудитория</th>
-          <th>Действия</th>
-        </tr>
-      </thead>
-      <tbody id="schedule-table-body">
-        <!-- Здесь будут вставляться строки расписания -->
-      </tbody>
-    </table>
-    <button type="button" id="add-row-btn">Добавить пару</button>
-    <button type="submit">Сохранить изменения</button>
-  </form>
-</section>
+</div>
+<form class="row" id="edit-schedule-form">
+  <div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>День недели</th>
+            <th>Пара</th>
+            <th>Время начала</th>
+            <th>Время окончания</th>
+            <th>Название дисциплины</th>
+            <th>Преподаватель</th>
+            <th>Аудитория</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-table-body"></tbody>
+      </table>
+    </div>
+    <button
+      class="btn btn-outline-primary btn-sm"
+      type="button"
+      id="add-row-btn"
+    >
+      Добавить пару
+    </button>
+    <button class="btn btn-outline-success btn-sm" type="submit">
+      Сохранить изменения
+    </button>
+  </div>
+</form>
 {% endblock %} {% block scripts %}
 <script src="../static/js/script.js" defer></script>
 {% endblock %}
